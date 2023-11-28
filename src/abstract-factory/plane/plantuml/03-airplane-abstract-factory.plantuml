@@ -1,0 +1,27 @@
+@startuml airplane
+!theme mars
+
+abstract class Airplane {
+   +prefix : string
+   +manufacturer : string
+   +aircraft : string
+}
+
+interface AirplaneInterface {
+}
+
+class AirplanePassenger {
+   +passengerCapacity : number
+   +buyTicket() : void
+}
+
+class AirplaneCargo {
+   +payload : number
+   +loadCargo(weight : number) : void
+}
+
+Airplane --right|> AirplaneInterface
+AirplanePassenger --up|> Airplane
+AirplaneCargo --up|> Airplane
+
+@enduml

@@ -1,0 +1,15 @@
+@startuml airplane
+!theme mars
+
+class Airplane {
+   +prefix : string
+   +manufacturer : string
+   +aircraft : string
+}
+
+interface AirplaneInterface {
+}
+
+Airplane --right|> AirplaneInterface
+
+@enduml

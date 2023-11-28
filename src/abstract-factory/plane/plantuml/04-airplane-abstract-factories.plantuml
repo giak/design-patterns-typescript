@@ -1,0 +1,44 @@
+@startuml airplane
+!theme mars
+
+abstract class Airplane {
+   +prefix : string
+   +manufacturer : string
+   +aircraft : string
+}
+
+interface AirplaneInterface {
+}
+
+class AirplanePassenger {
+   +passengerCapacity : number
+   +buyTicket() : void
+}
+
+class AirplaneCargo {
+   +payload : number
+   +loadCargo(weight : number) : void
+}
+
+Airplane --right|> AirplaneInterface
+AirplanePassenger --up|> Airplane
+AirplaneCargo --up|> Airplane
+
+
+class AirplaneFactrory {
+   +create(data : object) : Airplane
+}
+
+class AirplanePassengerFactory {
+   +create(data : object) : Airplane
+}
+
+class AirplaneCargoFactory {
+   +create(data : object) : Airplane
+}
+
+AirplaneFactrory --left|> AirplaneInterface
+AirplanePassengerFactory --up|> AirplaneFactrory
+AirplaneCargoFactory --up|> AirplaneFactrory
+
+@enduml
