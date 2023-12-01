@@ -1,0 +1,41 @@
+@startuml airplane
+!theme mars
+
+class Product {
+   -parts: Array
+   +addPart(part : string) : void
+   +show() : string
+}
+
+interface ProductBuilderInterface {
+  +buildPartA(): void;
+  +buildPartB(): void;
+}
+
+class ProductConcreteBuilder1 {
+   -product : Product
+   +buildPartA() : void
+   +buildPartB() : void
+   +getResult() : Product
+}
+
+class ProductConcreteBuilder2 {
+   -product : Product
+   +buildPartA() : void
+   +buildPartB() : void
+   +getResult() : Product
+}
+
+class ProductDirector {
+  +construct(builder: ProductBuilderInterface): void
+}
+
+ProductConcreteBuilder1 ..up|> ProductBuilderInterface
+ProductConcreteBuilder2 ..up|> ProductBuilderInterface
+
+ProductConcreteBuilder1 --> Product
+ProductConcreteBuilder2 --> Product
+
+ProductDirector --left> ProductBuilderInterface
+
+@enduml
