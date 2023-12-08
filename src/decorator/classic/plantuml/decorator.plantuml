@@ -1,0 +1,20 @@
+@startuml airplane
+!theme mars
+
+interface IComponent {
+  +method(): string
+}
+
+class Component {
+  +method(): string
+}
+
+class Decorator {
+  -object: IComponent
+  +method(): string
+}
+
+Component ..|> IComponent
+Decorator ..|> IComponent
+Decorator --> IComponent: has a
+@enduml

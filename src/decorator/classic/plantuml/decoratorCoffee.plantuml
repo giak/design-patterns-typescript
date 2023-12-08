@@ -1,0 +1,49 @@
+@startuml airplane
+!theme mars
+
+interface CoffeeInterface {
+  +cost(): number
+  +description(): string
+}
+
+class SimpleCoffee {
+  +cost(): number
+  +description(): string
+}
+
+abstract class CoffeeDecorator {
+  -coffee: CoffeeInterface
+  +cost(): number
+  +description(): string
+}
+
+class MilkDecorator {
+  +cost(): number
+  +description(): string
+}
+
+class SugarDecorator {
+  +cost(): number
+  +description(): string
+}
+
+class WhippedCreamDecorator {
+  +cost(): number
+  +description(): string
+}
+
+class CaramelDecorator {
+  +cost(): number
+  +description(): string
+}
+
+CoffeeInterface --|> SimpleCoffee
+CoffeeInterface --|> CoffeeDecorator
+CoffeeDecorator --|> MilkDecorator
+CoffeeDecorator --|> SugarDecorator
+CoffeeDecorator --|> WhippedCreamDecorator
+CoffeeDecorator --|> CaramelDecorator
+
+
+
+@enduml
