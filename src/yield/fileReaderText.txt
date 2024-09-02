@@ -1,0 +1,8 @@
+Ceci est une ligne de texte ordinaire.
+Voici une autre ligne qui ne contient rien de spécial.
+Ligne avec un mot-clé: recherche.
+Encore une autre ligne de texte pour tester.
+Cette ligne contient aussi le mot recherche que nous voulons trouver.
+Une autre ligne sans mot-clé particulier.
+recherche est un mot-clé que nous utilisons pour tester notre code.
+Fin du fichier avec encore une mention du mot recherche.
