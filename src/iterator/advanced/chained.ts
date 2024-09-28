@@ -23,7 +23,7 @@ export class LinkedList<T> implements Iterable<T>, LinkedListInterface<T> {
       this.head = newNode;
       this.tail = newNode;
     } else {
-      if (this.tail) {      
+      if (this.tail) {
         this.tail.next = newNode;
         this.tail = newNode;
       }
@@ -145,5 +145,3 @@ for (const item of list) {
     console.log(item); // Affiche 2, 3, 4
   }
 }
-
-export type {};

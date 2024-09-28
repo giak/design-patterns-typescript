@@ -32,6 +32,9 @@ class LinkedList<T> implements Iterable<T> {
         }
         return { value: null, done: true };
       },
+      hasNext(): boolean {
+        return current !== null;
+      },
     };
   }
 }
