@@ -1,15 +1,19 @@
 {
-    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "strict": true,
-      "moduleResolution": "node",
-      "jsx": "react",
-      "sourceMap": true,
-      "outDir": "./dist",
-      "rootDir": "./src",
-      "experimentalDecorators": true,
-      "emitDecoratorMetadata": true,
-    }
-  }
+  "compilerOptions": {
+    "target": "es6",
+    "module": "CommonJS",
+    "esModuleInterop": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -1,0 +1,69 @@
+classDiagram
+    class FinanceBloc {
+        -financeService: FinanceService
+        +accounts$: Observable~AccountInterface[]~
+        +transactions$: Observable~TransactionInterface[]~
+        +error$: Observable~string | null~
+        +constructor(financeService: FinanceService)
+        +loadTransactions(accountId: number, type: TransactionType)
+        +addTransaction(transaction: TransactionInterface)
+    }
+
+    class FinanceService {
+        -accounts: AccountInterface[]
+        -transactions: TransactionInterface[]
+        +getAccounts() Promise~AccountInterface[]~
+        +getTransactions(accountId: number) Promise~TransactionInterface[]~
+        +addTransaction(transaction: TransactionInterface) Promise~void~
+    }
+
+    class AccountView {
+        -financeBloc: FinanceBloc
+        +constructor(financeBloc: FinanceBloc)
+    }
+
+    class TransactionView {
+        -financeBloc: FinanceBloc
+        -accountId: number
+        +constructor(financeBloc: FinanceBloc, accountId: number)
+        +loadTransactions(type: TransactionType)
+        +handleUserInput(input: string)
+    }
+
+    class TransactionListComponent {
+        +renderTransactionList(transactions: TransactionInterface[]) string
+    }
+
+    class AccountInterface {
+        <<interface>>
+        +id: number
+        +name: string
+        +balance: number
+    }
+
+    class TransactionInterface {
+        <<interface>>
+        +id: number
+        +accountId: number
+        +amount: number
+        +date: Date
+        +description: string
+        +type: string
+    }
+
+    class Main {
+        +main()
+    }
+
+    FinanceBloc --> FinanceService : uses
+    FinanceBloc --> AccountInterface : manages
+    FinanceBloc --> TransactionInterface : manages
+    AccountView --> FinanceBloc : observes
+    TransactionView --> FinanceBloc : observes
+    TransactionView --> TransactionListComponent : uses
+    FinanceService --> AccountInterface : manages
+    FinanceService --> TransactionInterface : manages
+    Main --> FinanceBloc : creates and uses
+    Main --> AccountView : creates
+    Main --> TransactionView : creates
+    Main --> TransactionInterface : creates new transaction

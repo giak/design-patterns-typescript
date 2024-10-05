@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tableau de Bord Financier</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <h1>Tableau de Bord Financier 📊</h1>
+
+  <div id="filter"></div>
+
+  <div id="loader" style="display: none;">Chargement en cours...</div>
+  <div id="error" style="display: none; color: red;"></div>
+
+  <div id="dashboard-container"></div>
+
+  <div id="pagination"></div>
+
+  <div id="chart-container">
+    <canvas id="priceChart"></canvas>
+  </div>
+
+  <script type="module" src="./main.ts"></script>
+</body>
+</html>

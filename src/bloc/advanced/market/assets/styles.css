@@ -1,0 +1,154 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    background-color: #f0f2f5;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+#filter {
+    margin-bottom: 20px;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.stock-table th,
+.stock-table td {
+    padding: 12px;
+    text-align: right;
+}
+
+.stock-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.stock-table td {
+    border-bottom: 1px solid #e9ecef;
+}
+
+.stock-table tr:last-child td {
+    border-bottom: none;
+}
+
+.stock-table .symbol {
+    font-weight: bold;
+    text-align: left;
+}
+
+.stock-table .price {
+    font-weight: 600;
+}
+
+.stock-table .change {
+    font-weight: 600;
+}
+
+.stock-table .positive-change {
+    color: #28a745;
+}
+
+.stock-table .negative-change {
+    color: #dc3545;
+}
+
+.stock-table .volume {
+    color: #6c757d;
+}
+
+.stock-table .timestamp {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+#loader {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #495057;
+    animation: pulse 1.5s infinite;
+}
+
+#chart-container {
+    margin-top: 30px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+canvas {
+    max-width: 100%;
+}
+
+#pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#pagination button {
+    margin: 0 10px;
+    padding: 8px 16px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+#pagination button:hover {
+    background-color: #0056b3;
+}
+
+#pagination button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: #6c757d;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+.stock-table tr {
+  transition: background-color 0.3s ease;
+}
+
+.stock-table tr:hover {
+  background-color: #f8f9fa;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+.fade-out {
+  animation: fadeOut 0.3s ease-out;
+}

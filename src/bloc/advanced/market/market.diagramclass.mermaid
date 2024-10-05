@@ -1,0 +1,106 @@
+classDiagram
+    class MarketBloc {
+        -marketDataService: MarketDataService
+        -quotesSubject: BehaviorSubject<StockQuoteModel[]>
+        -selectedSymbolSubject: BehaviorSubject<string>
+        -historicalDataSubject: BehaviorSubject<StockQuoteModel[]>
+        -totalPagesSubject: BehaviorSubject<number>
+        -currentPageSubject: BehaviorSubject<number>
+        -loadingSubject: BehaviorSubject<boolean>
+        -errorSubject: BehaviorSubject<string | null>
+        +quotes$: Observable<StockQuoteModel[]>
+        +selectedSymbol$: Observable<string>
+        +historicalData$: Observable<StockQuoteModel[]>
+        +totalPages$: Observable<number>
+        +currentPage$: Observable<number>
+        +loading$: Observable<boolean>
+        +error$: Observable<string | null>
+        -refreshSubscription: Subscription
+        +constructor()
+        -startLiveUpdates(intervalMs: number) void
+        -fetchLatestQuotes() Promise<void>
+        +setSelectedSymbol(symbol: string) void
+        -fetchHistoricalData(symbol: string, page: number) Promise<void>
+        +nextPage() void
+        +previousPage() void
+        -setupDataSync() void
+        -handleError(message: string, error: unknown) void
+        +dispose() void
+    }
+
+    class MarketDataService {
+        -symbols: string[]
+        +getLatestQuotes() Promise<StockQuoteModel[]>
+        +getHistoricalData(symbol: string, page: number, pageSize: number) Promise<data: StockQuoteModel[], totalPages: number>
+        -generateRandomPrice() number
+        -generateRandomChange() number
+        -generateRandomVolume() number
+    }
+
+    class StockQuoteModel {
+        +symbol: string
+        +price: number
+        +change: number
+        +volume: number
+        +timestamp: Date
+        +constructor(symbol: string, price: number, change: number, volume: number, timestamp: Date)
+        -validate() void
+        +fromPlainObject(data: object) StockQuoteModel
+    }
+
+    class ChartView {
+        -marketBloc: MarketBloc
+        -container: HTMLElement
+        -canvas: HTMLCanvasElement
+        -chartInstance: Chart
+        +constructor(marketBloc: MarketBloc)
+        -initialize() void
+        -createCanvas() void
+        -renderChart(data: StockQuoteModel[]) void
+    }
+
+    class DashboardView {
+        -marketBloc: MarketBloc
+        -container: HTMLElement
+        -paginationContainer: HTMLElement
+        -tableBody: HTMLTableSectionElement
+        +constructor(marketBloc: MarketBloc)
+        -initialize() void
+        -createTable() void
+        -updateQuotes(quotes: StockQuoteModel[]) void
+        -updateRow(row: HTMLTableRowElement, quote: StockQuoteModel) void
+        -updatePagination(currentPage: number, totalPages: number) void
+        -toggleLoading(isLoading: boolean) void
+        -showError(error: string | null) void
+    }
+
+    class FilterView {
+        -marketBloc: MarketBloc
+        -container: HTMLElement
+        +constructor(marketBloc: MarketBloc)
+        -initialize() void
+        -onSymbolChange(event: Event) void
+    }
+
+    class MarketDataError {
+        +constructor(message: string)
+    }
+
+    class Main {
+        +marketBloc: MarketBloc
+        +filterView: FilterView
+        +dashboardView: DashboardView
+        +chartView: ChartView
+    }
+
+    MarketBloc --> MarketDataService : uses
+    MarketBloc --> StockQuoteModel : manages
+    ChartView --> MarketBloc : observes
+    DashboardView --> MarketBloc : observes
+    FilterView --> MarketBloc : interacts
+    MarketDataService --> StockQuoteModel : creates
+    MarketDataService --> MarketDataError : throws
+    Main --> MarketBloc : creates
+    Main --> FilterView : creates
+    Main --> DashboardView : creates
+    Main --> ChartView : creates
