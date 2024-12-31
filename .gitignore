@@ -1,3 +1,9 @@
 .vscode/
 node_modules/
 notes
+
+*.cs
+.cursorrules
+
+.vitepress/cache/
+.vitepress/dist/
