@@ -1,0 +1,209 @@
+%% Diagramme d'Architecture du Système de Réservation d'Hôtel
+%% Implémentation des principes SOLID
+classDiagram
+
+    %% ==============================
+    %% SECTION 1: TYPES FONDAMENTAUX
+    %% ==============================
+
+    %% Types de Base
+    class DiscountCodeType {
+        <<enumeration>>
+        SUMMER10
+        WINTER15
+    }
+
+    class DiscountMapType {
+        <<type>>
+        Map~DiscountCodeType, number~
+    }
+
+    class BookingResultType {
+        <<type>>
+        +success boolean
+        +message string
+        +error? string
+    }
+
+    %% ==============================
+    %% SECTION 2: INTERFACES MÉTIER
+    %% ==============================
+
+    %% Interfaces Chambre
+    class RoomBasicInterface {
+        <<interface>>
+        +id number
+        +type string
+        +pricePerNight number
+    }
+
+    class RoomAvailabilityInterface {
+        <<interface>>
+        +available boolean
+        +maxOccupants number
+    }
+
+    class RoomInterface {
+        <<interface>>
+    }
+
+    %% Interfaces Client
+    class CustomerContactInterface {
+        <<interface>>
+        +email string
+        +phone? string
+    }
+
+    class CustomerProfileInterface {
+        <<interface>>
+        +id number
+        +name string
+        +preferences string[]
+    }
+
+    class CustomerInterface {
+        <<interface>>
+    }
+
+    %% ==============================
+    %% SECTION 3: INTERFACES REPOSITORY
+    %% ==============================
+
+    %% Interfaces Repository Génériques
+    class ReadableRepositoryInterface~T~ {
+        <<interface>>
+        +findById(id: number) Promise~T~
+        +exists(id: number) Promise~boolean~
+    }
+
+    class WritableRepositoryInterface~T~ {
+        <<interface>>
+        +save(entity: T) Promise~void~
+        +delete(id: number) Promise~boolean~
+    }
+
+    class RepositoryInterface~T~ {
+        <<interface>>
+    }
+
+    %% Interfaces Repository Spécifiques
+    class RoomSearchInterface {
+        <<interface>>
+        +findAvailableRoom(criteria: RoomSearchCriteriaInterface) Promise~RoomInterface~
+    }
+
+    class RoomManagementInterface {
+        <<interface>>
+        +updateRoomAvailability(roomId: number, available: boolean) Promise~boolean~
+    }
+
+    class RoomRepositoryInterface {
+        <<interface>>
+    }
+
+    %% ==============================
+    %% SECTION 4: INTERFACES SERVICE
+    %% ==============================
+
+    %% Interfaces Notification
+    class MessageValidatorInterface {
+        <<interface>>
+        +validateRecipient(recipient: string) boolean
+        +validateContent(content: string) boolean
+    }
+
+    class MessageSenderInterface {
+        <<interface>>
+        +sendMessage(recipient: string, content: string) Promise~boolean~
+    }
+
+    class NotificationInterface {
+        <<interface>>
+        +sendNotification(recipient: string, subject: string, content: string) Promise~boolean~
+    }
+
+    %% Interface Service Principal
+    class BookingServiceInterface {
+        <<interface>>
+        +bookRoom(customer: CustomerInterface, criteria: RoomSearchCriteriaInterface, occupants: number) Promise~BookingResultType~
+    }
+
+    %% ==============================
+    %% SECTION 5: IMPLÉMENTATIONS
+    %% ==============================
+
+    %% Implémentation Repository
+    class InMemoryRoomRepository {
+        -rooms Map~number, RoomInterface~
+        +findAvailableRoom(criteria) Promise~RoomInterface~
+        +updateRoomAvailability(roomId, available) Promise~boolean~
+    }
+
+    %% Implémentations Notification
+    class EmailNotificationService {
+        -emailClient EmailClientInterface
+        +validateRecipient(recipient) boolean
+        +validateContent(content) boolean
+        +sendMessage(recipient, content) Promise~boolean~
+        +sendNotification(recipient, subject, content) Promise~boolean~
+    }
+
+    class SMSNotificationService {
+        -smsClient SMSClientInterface
+        +validateRecipient(recipient) boolean
+        +validateContent(content) boolean
+        +sendMessage(recipient, content) Promise~boolean~
+        +sendNotification(recipient, subject, content) Promise~boolean~
+    }
+
+    %% Implémentation Service Principal
+    class HotelBookingService {
+        -roomRepository RoomRepositoryInterface
+        -notificationService NotificationInterface
+        +bookRoom(customer, criteria, occupants) Promise~BookingResultType~
+    }
+
+    %% Factory
+    class BookingServiceFactory {
+        +createBookingService() BookingServiceInterface
+        -createRoomRepository() RoomRepositoryInterface
+        -createNotificationService() NotificationInterface
+    }
+
+    %% ==============================
+    %% SECTION 6: RELATIONS
+    %% ==============================
+
+    %% Relations d'Héritage
+    RoomInterface --|> RoomBasicInterface : extends
+    RoomInterface --|> RoomAvailabilityInterface : extends
+    CustomerInterface --|> CustomerContactInterface : extends
+    CustomerInterface --|> CustomerProfileInterface : extends
+    RepositoryInterface --|> ReadableRepositoryInterface : extends
+    RepositoryInterface --|> WritableRepositoryInterface : extends
+    RoomRepositoryInterface --|> RoomSearchInterface : extends
+    RoomRepositoryInterface --|> RoomManagementInterface : extends
+    NotificationInterface --|> MessageValidatorInterface : extends
+    NotificationInterface --|> MessageSenderInterface : extends
+
+    %% Relations d'Implémentation
+    InMemoryRoomRepository ..|> RoomRepositoryInterface : implements
+    EmailNotificationService ..|> NotificationInterface : implements
+    SMSNotificationService ..|> NotificationInterface : implements
+    HotelBookingService ..|> BookingServiceInterface : implements
+
+    %% Relations de Dépendance
+    HotelBookingService ..> RoomRepositoryInterface : uses
+    HotelBookingService ..> NotificationInterface : uses
+    BookingServiceFactory ..> BookingServiceInterface : creates
+    BookingServiceFactory ..> RoomRepositoryInterface : creates
+    BookingServiceFactory ..> NotificationInterface : creates
+
+    %% ==============================
+    %% SECTION 7: NOTES EXPLICATIVES
+    %% ==============================
+
+    note for BookingServiceInterface "Service principal\nGestion des réservations"
+    note for RoomRepositoryInterface "Gestion des chambres\nStockage et recherche"
+    note for NotificationInterface "Système de notification\nEmail et SMS"
+    note for BookingServiceFactory "Création des services\nInjection des dépendances"

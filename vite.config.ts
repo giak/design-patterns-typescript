@@ -5,10 +5,16 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true,
+    commonjsOptions: {
+      include: [/dayjs/, /node_modules/],
+    },
   },
   resolve: {
     alias: {
       '@': '/src',
     },
+  },
+  optimizeDeps: {
+    include: ['dayjs', 'mermaid'],
   },
 });
