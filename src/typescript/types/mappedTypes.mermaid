@@ -1,0 +1,32 @@
+---
+title: TypeScript Role-Based Permissions System
+---
+graph TD
+    A("rolePermissions Object") -->|typeof| B("RolePermissions Type")
+    B -->|keyof| C("UserRoleType")
+    B -->|"indexed access"| D("ActionsForRole")
+
+    subgraph "Type Hierarchy"
+        C -->|extends| E("admin/editor/viewer")
+        D -->|"R extends"| F("Permitted Actions")
+    end
+
+    subgraph "Runtime Functions"
+        G("getPermissionsForRole") -->|returns| H("readonly string[]")
+        I("hasPermission") -->|uses| G
+        I -->|validates| J("Permission Check")
+    end
+
+    subgraph "Role Permissions"
+        K("admin") -->|has| L("create, edit, delete, view")
+        M("editor") -->|has| N("edit, view")
+        O("viewer") -->|has| P("view")
+    end
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    
+    classDef permission fill:#ffe,stroke:#333,stroke-width:1px
+    class L,N,P permission
